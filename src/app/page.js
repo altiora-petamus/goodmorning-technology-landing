@@ -44,10 +44,10 @@ const fadeUp = {
   show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
 };
 
-function useActiveSection(ids: string[]) {
+function useActiveSection(ids) {
   const [active, setActive] = useState(ids[0] || "");
   useEffect(() => {
-    const observers: IntersectionObserver[] = [];
+    const observers = [];
     ids.forEach((id) => {
       const el = document.getElementById(id);
       if (!el) return;
@@ -68,11 +68,11 @@ function useActiveSection(ids: string[]) {
 }
 
 // Utility
-function cx(...classes: (string | false | undefined)[]) {
+function cx(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-function SectionHeader({ eyebrow, title, subtitle }: { eyebrow?: string; title: string; subtitle?: string }) {
+function SectionHeader({ eyebrow, title, subtitle }) {
   return (
     <div className="mx-auto max-w-3xl text-center">
       {eyebrow && <p className={cx("mb-2 text-sm font-semibold tracking-wider uppercase", brand.textGradient)}>{eyebrow}</p>}
@@ -85,7 +85,7 @@ function SectionHeader({ eyebrow, title, subtitle }: { eyebrow?: string; title: 
 // -----------------------------------------------------------------------------
 // Nav (reverted to include contact + quote)
 // -----------------------------------------------------------------------------
-function Nav({ sections }: { sections: string[] }) {
+function Nav({ sections }) {
   const active = useActiveSection(sections);
   return (
     <div className="sticky top-0 z-50 backdrop-blur bg-white/70 border-b border-slate-200">
@@ -146,7 +146,10 @@ function Hero() {
             </Button>
           </motion.div>
           <div className="mt-6 flex items-center gap-4 text-sm text-slate-600">
-            <div className="flex items-center gap-1"><Star className="h-4 w-4" /><Star className="h-4 w-4" /><Star className="h-4 w-4" /><Star className="h-4 w-4" /><Star className="h-4 w-4" /> <span>Happy clients</span></div>
+            <div className="flex items-center gap-1">
+              <Star className="h-4 w-4" /><Star className="h-4 w-4" /><Star className="h-4 w-4" /><Star className="h-4 w-4" /><Star className="h-4 w-4" />
+              <span>Happy clients</span>
+            </div>
             <div className="hidden sm:block">•</div>
             <div>Launch in <b>7–21 days</b></div>
           </div>
@@ -159,7 +162,7 @@ function Hero() {
               <div className="h-4 w-4/5 rounded-md bg-slate-100" />
               <div className="h-4 w-3/5 rounded-md bg-slate-100" />
               <div className="mt-2 grid grid-cols-3 gap-3">
-                {[...Array(6)].map((_, i) => (
+                {Array.from({ length: 6 }).map((_, i) => (
                   <div key={i} className="h-24 rounded-xl bg-slate-100" />
                 ))}
               </div>
