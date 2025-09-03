@@ -616,7 +616,7 @@ function Nav({ sections }) {
             <picture class=" max-w-[500px]">
               <source 
                 media="(min-width: 768px) and (max-width: 1124px), (max-width: 400px)"
-                srcset="/banner-sand-compressed.png" 
+                srcSet="/banner-sand-compressed.png" 
               />
               <img 
                 src="/brand-banner.png" 
