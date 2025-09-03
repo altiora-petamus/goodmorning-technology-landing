@@ -31,18 +31,18 @@ export const metadata = {
     "digital transformation",
     "Los Angeles website design",
   ],
-  authors: [{ name: "Kaleb Franken", url: "https://goodmorningtechnology.com" }],
+  authors: [{ name: "Kaleb Franken", url: "https://www.goodmorningtechnology.com" }],
   openGraph: {
     title: "Good Morning Technology | Cloud & AI Consulting",
     description:
       "Empowering businesses with cloud, AI, and digital transformation. Partner with Good Morning Technology for innovation and growth.",
-    url: "https://goodmorningtechnology.com",
+    url: "https://www.goodmorningtechnology.com",
     siteName: "Good Morning Technology",
     locale: "en_US",
     type: "website",
     images: [
       {
-        url: "https://goodmorningtechnology.com/og-image.jpg",
+        url: "https://www.goodmorningtechnology.com/og-image.jpg",
         width: 1200,
         height: 630,
         alt: "Good Morning Technology - Cloud & AI Consulting",

@@ -611,7 +611,19 @@ function Nav({ sections }) {
     <div className="sticky top-0 z-50 backdrop-blur bg-white/70 border-b border-slate-200">
       <div className="mx-auto max-w-7xl px-4 py-3 flex items-center gap-4">
         <a href="#home" className="font-semibold text-slate-900 text-lg">
-          <span className={brand.textGradient}>good morning</span> technology
+          {/* <span className={brand.textGradient}>good morning</span> technology */}
+
+            <picture class=" max-w-[500px]">
+              <source 
+                media="(min-width: 768px) and (max-width: 1124px), (max-width: 400px)"
+                srcset="/banner-sand-compressed.png" 
+              />
+              <img 
+                src="/brand-banner.png" 
+                alt="Banner" 
+                class="h-10 min-w-[124px] object-contain" 
+              />
+            </picture>
         </a>
         <nav className="ml-auto hidden md:flex items-center gap-2">
           {sections.map((id) => (
