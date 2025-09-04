@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { motion,useMotionValue, animate, useScroll, useTransform, useSpring } from "framer-motion";
+import { motion, useMotionValueEvent, useMotionValue, animate, useScroll, useTransform, useSpring } from "framer-motion";
 // import cx from "classnames";
 import {
   ArrowRight,
@@ -20,7 +20,9 @@ import {
   Star,
   Phone,
   Mail,
-  ArrowRightCircleIcon
+  ArrowRightCircleIcon,
+  ChartBar,
+  Grid,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -31,19 +33,22 @@ import { Badge } from "@/components/ui/badge";
 // -----------------------------------------------------------------------------
 // Good Morning Technology — Landing Page (no dark mode, no purple gradients)
 // -----------------------------------------------------------------------------
+const goToApp = () => {
+  window.location.href = "app.goodmorningtechnology.com"; // Replace with the actual app URL
+};
 
 const brand = {
   name: "good morning technology",
   domain: "goodmorningtechnology.com",
   email: "hello@goodmorningtechnology.com",
-  phone: "(555) 010-2025",
+  phone: "(310) 237-6671",
   gradient: "bg-gradient-to-r from-sky-400 to-emerald-400",
   textGradient: "bg-gradient-to-r from-sky-400 to-emerald-400 bg-clip-text text-transparent",
 };
 
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
+  show: { opacity: 1, y: 0, transition: { duration: 1.4, ease: "easeOut" } }, // Increased duration
 };
 
 function useActiveSection(ids) {
@@ -118,12 +123,24 @@ function Services() {
       icon: Handshake,
       title: "Ongoing Support",
       description: "Continued maintenance and updates to keep your website running smoothly and securely.",
-    },
+    }, {
+      icon: ChartBar,
+      title: "Marketing Tracking & UTM Advertising Tracking",
+      description: "Comprehensive tracking solutions to monitor and optimize your advertising campaigns effectively.",
+    }, {
+      icon: LineChart,
+      title: "Full-Stack Analytics & Tracking",
+      description: "In-depth analytics and tracking to provide insights into user behavior and website performance.",
+    }, {
+      icon: Grid,
+      title: "Heatmaps",
+      description: "Visualize user interactions to understand engagement and optimize your website's layout and content.",
+    }
   ];
 
   return (
-    <section id="services" className="py-16 md:py-24 bg-slate-50">
-      <div className="mx-auto max-w-7xl px-4 overflow-hidden">
+    <section id="services" className="min-h-screen py-16 md:py-24 bg-slate-50">
+      <div className="mx-auto max-w-7xl p-4 overflow-hidden">
         <motion.div variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }}>
           <SectionHeader
             eyebrow="Services"
@@ -139,7 +156,7 @@ function Services() {
               initial="hidden"
               whileInView="show"
               viewport={{ once: true }}
-              transition={{ delay: i * 0.1 }}
+              transition={{ delay: i * 0.2 }} // Increased delay
             >
               <Card className="h-full border-0 shadow-sm hover:shadow-md transition-shadow">
                 <CardHeader>
@@ -163,6 +180,21 @@ function Services() {
 // -----------------------------------------------------------------------------
 // Pricing
 // -----------------------------------------------------------------------------
+
+const popOut = {
+  hidden: { opacity: 0, scale: 0.9, y: 40 },
+  show: {
+    opacity: 1,
+    scale: 1,
+    y: 0,
+    transition: {
+      type: "spring",
+      stiffness: 160,
+      damping: 24,
+    },
+  },
+};
+
 function Pricing() {
   const plans = [
     {
@@ -217,52 +249,86 @@ function Pricing() {
   ];
 
   return (
-    <section id="pricing" className="py-16 md:py-24">
+    <section id="pricing" className="min-h-screen py-16 md:py-24">
       <div className="mx-auto max-w-7xl px-4 overflow-hidden">
-        <motion.div variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }}>
+        <motion.div
+          variants={popOut}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true }}
+        >
           <SectionHeader
             eyebrow="Pricing"
             title="Simple, transparent pricing"
             subtitle="Choose the plan that fits your needs. All plans include hosting setup and basic maintenance."
           />
         </motion.div>
-        <div className="mt-16 grid md:grid-cols-3 gap-8">
+
+        <div className="mt-16 grid md:grid-cols-3 gap-8 py-6">
           {plans.map((plan, i) => (
             <motion.div
               key={plan.name}
-              variants={fadeUp}
+              variants={popOut}
               initial="hidden"
               whileInView="show"
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1 }}
-              className="relative"
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ delay: i * 0.15 }}
+              className="relative flex flex-col"
             >
               {plan.popular && (
-                <Badge className={cx("absolute -top-3 left-1/2 -translate-x-1/2 z-10", brand.gradient)}>
+                <Badge
+                  className={cx(
+                    "absolute -top-3 left-1/2 -translate-x-1/2 z-10",
+                    brand.gradient
+                  )}
+                >
                   Most Popular
                 </Badge>
               )}
-              <Card className={cx("h-full", plan.popular ? "border-2 border-sky-200 shadow-lg" : "border border-slate-200")}>
+
+              <Card
+                className={cx(
+                  "h-full",
+                  plan.popular
+                    ? "border-2 border-sky-200 shadow-lg"
+                    : "border border-slate-200"
+                )}
+              >
                 <CardHeader>
                   <CardTitle className="text-2xl">{plan.name}</CardTitle>
                   <CardDescription>{plan.description}</CardDescription>
                   <div className="mt-4">
-                    <span className="text-4xl font-bold text-slate-900">{plan.price}</span>
+                    <span className="text-4xl font-bold text-slate-900">
+                      {plan.price}
+                    </span>
                     <span className="text-slate-600 ml-2">{plan.period}</span>
                   </div>
                 </CardHeader>
-                <CardContent className="space-y-4">
+
+                <CardContent className="flex flex-col flex-1 space-y-4">
                   <ul className="space-y-3">
                     {plan.features.map((feature) => (
                       <li key={feature} className="flex items-center gap-3">
                         <CheckCircle2 className="h-5 w-5 text-emerald-500 flex-shrink-0" />
-                        <span className="text-sm text-slate-600">{feature}</span>
+                        <span className="text-sm text-slate-600">
+                          {feature}
+                        </span>
                       </li>
                     ))}
                   </ul>
+
                   <Button
-                    className={cx("w-full mt-6 transition-all duration-200", plan.popular ? cx(brand.gradient, "hover:opacity-90") : "bg-slate-900 hover:bg-slate-800")}
-                    onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })}
+                    className={cx(
+                      "w-full mt-auto transition-all duration-200",
+                      plan.popular
+                        ? cx(brand.gradient, "hover:opacity-90")
+                        : "bg-slate-900 hover:bg-slate-800"
+                    )}
+                    onClick={() =>
+                      document
+                        .getElementById("contact")
+                        ?.scrollIntoView({ behavior: "smooth" })
+                    }
                   >
                     Get started
                   </Button>
@@ -302,8 +368,8 @@ function Work() {
   ];
 
   return (
-    <section id="work" className="py-16 md:py-24 bg-slate-50">
-      <div className="mx-auto max-w-7xl px-4 overflow-hidden">
+    <section id="work" className="min-h-screen py-16 md:py-24 bg-slate-50">
+      <div className="mx-auto max-w-7xl p-4 overflow-hidden">
         <motion.div variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }}>
           <SectionHeader
             eyebrow="Our Work"
@@ -319,7 +385,7 @@ function Work() {
               initial="hidden"
               whileInView="show"
               viewport={{ once: true }}
-              transition={{ delay: i * 0.1 }}
+              transition={{ delay: i * 0.2 }} // Increased delay
             >
               <Card className="overflow-hidden border-0 shadow-sm hover:shadow-lg transition-all duration-300 group">
                 <div className="aspect-[4/3] bg-slate-200 overflow-hidden">
@@ -346,63 +412,108 @@ function Work() {
 // -----------------------------------------------------------------------------
 // Process
 // -----------------------------------------------------------------------------
+
 function Process() {
+
+  const container = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.4, // children animate 200ms apart
+      },
+    },
+  };
+
+  const fadeUp = {
+    hidden: { opacity: 0, y: 24 },
+    show: {
+      opacity: 1,
+      y: 0,
+      transition: { type: "spring", stiffness: 80, damping: 24 },
+    },
+  };
+
   const steps = [
     {
       number: "01",
       title: "Discovery & Planning",
-      description: "We start by understanding your business, goals, and target audience to create a strategic plan.",
+      description:
+        "We start by understanding your business, goals, and target audience to create a strategic plan.",
     },
     {
       number: "02",
       title: "Design & Mockups",
-      description: "Our designers create beautiful mockups that capture your brand and engage your audience.",
+      description:
+        "Our designers create beautiful mockups that capture your brand and engage your audience.",
     },
     {
       number: "03",
       title: "Development",
-      description: "We build your website using modern technology, ensuring it's fast, secure, and responsive.",
+      description:
+        "We build your website using modern technology, ensuring it's fast, secure, and responsive.",
     },
     {
       number: "04",
       title: "Launch & Support",
-      description: "We launch your site and provide ongoing support to ensure everything runs smoothly.",
+      description:
+        "We launch your site and provide ongoing support to ensure everything runs smoothly.",
     },
   ];
 
   return (
-    <section id="process" className="py-16 md:py-24">
+    <section id="process" className="min-h-screen py-16 md:py-24">
       <div className="mx-auto max-w-7xl px-4 overflow-hidden">
-        <motion.div variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }}>
+        {/* Section header */}
+        <motion.div
+          variants={fadeUp}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true }}
+        >
           <SectionHeader
             eyebrow="Process"
             title="How we work"
             subtitle="Our proven process ensures your project is delivered on time and exceeds expectations."
           />
         </motion.div>
-        <div className="mt-16 grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {steps.map((step, i) => (
+
+        {/* Steps grid with staggered animation */}
+        <motion.div
+          variants={container}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true }}
+          className="mt-16 grid md:grid-cols-2 lg:grid-cols-4 gap-8"
+        >
+          {steps.map((step) => (
             <motion.div
               key={step.number}
               variants={fadeUp}
-              initial="hidden"
-              whileInView="show"
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1 }}
               className="text-center"
             >
-              <div className={cx("w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6", brand.gradient)}>
-                <span className="text-xl font-bold text-white">{step.number}</span>
+              <div
+                className={cx(
+                  "w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6",
+                  brand.gradient
+                )}
+              >
+                <span className="text-xl font-bold text-white">
+                  {step.number}
+                </span>
               </div>
-              <h3 className="text-xl font-semibold text-slate-900 mb-3">{step.title}</h3>
+              <h3 className="text-xl font-semibold text-slate-900 mb-3">
+                {step.title}
+              </h3>
               <p className="text-slate-600">{step.description}</p>
             </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );
 }
+
 
 // -----------------------------------------------------------------------------
 // FAQ
@@ -436,8 +547,8 @@ function FAQ() {
   ];
 
   return (
-    <section id="faq" className="py-16 md:py-24 bg-slate-50">
-      <div className="mx-auto max-w-4xl px-4 overflow-hidden">
+    <section id="faq" className="min-h-screen py-16 md:py-24 bg-slate-50 mt-64">
+      <div className="mx-auto max-w-4xl p-4 overflow-hidden">
         <motion.div variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }}>
           <SectionHeader
             eyebrow="FAQ"
@@ -453,7 +564,7 @@ function FAQ() {
               initial="hidden"
               whileInView="show"
               viewport={{ once: true }}
-              transition={{ delay: i * 0.1 }}
+              transition={{ delay: i * 0.2 }} // Increased delay
             >
               <Card>
                 <CardHeader>
@@ -476,7 +587,7 @@ function FAQ() {
 // -----------------------------------------------------------------------------
 function Contact() {
   return (
-    <section id="contact" className="py-16 md:py-24">
+    <section id="contact" className="min-h-screen py-16 md:py-24">
       <div className="mx-auto max-w-4xl px-4 overflow-hidden">
         <motion.div variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }}>
           <SectionHeader
@@ -621,7 +732,7 @@ function Nav({ sections }) {
         highlight.style.opacity = '1';
         setTimeout(() => {
           highlight.style.opacity = '0';
-        }, 400); // Line disappears after 1000ms (1 second)
+        }, 800); // Increased duration
       }
     }
   }, [active]);
@@ -631,26 +742,26 @@ function Nav({ sections }) {
       <div className="mx-auto max-w-7xl px-4 py-3 flex items-center gap-4 overflow-hidden">
         <a href="#" className="font-semibold text-slate-900 text-lg">
           <picture className="max-w-[500px]">
-            <source 
-              media="(min-width: 768px) and (max-width: 1124px), (max-width: 400px)"
-              srcSet="/banner-sand-compressed.png" 
+            <source
+              media="(min-width: 768px) and (max-width: 1024px), (max-width: 400px)"
+              srcSet="/banner-sand-compressed.png"
             />
-            <img 
-              src="/brand-banner.png" 
-              alt="Banner" 
-              className="h-10 min-w-[124px] object-contain" 
+            <img
+              src="/brand-banner.png"
+              alt="Banner"
+              className="h-10 min-w-[124px] object-contain"
             />
           </picture>
         </a>
-        <nav className="ml-auto hidden md:flex items-center gap-2 relative">
+        <nav className="ml-auto hidden md:flex items-center gap-[.5vw] relative">
           <div // Highlight line element
-            className={`highlight absolute transition-all duration-1000 ease-in-out ${brand.gradient} rounded-full`}
+            className={`highlight absolute transition-all duration-1500 ease-in-out ${brand.gradient} rounded-full`} // Increased duration
             style={{
-              width: '100px',
+              width: '50px',
               height: '20px', // Line height
-              transform: 'translateX(0px)',
+              transform: 'translateX(-15px)',
               zIndex: -1,
-              opacity: '1', // Initially invisible
+              opacity: '0', // Initially invisible
             }}
           />
           {sections.map((id) => (
@@ -667,9 +778,7 @@ function Nav({ sections }) {
           ))}
         </nav>
         <div className="ml-auto md:ml-0 flex items-center gap-2">
-          <Button variant="secondary" className="hidden sm:inline-flex" asChild>
-            <a href={`mailto:${brand.email}?subject=Project%20inquiry%20—%20${encodeURIComponent(brand.name)}`}>Contact</a>
-          </Button>
+
           <Button className={brand.gradient} onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })}>
             Get a quote <ArrowRight className="ml-1 h-4 w-4" />
           </Button>
@@ -684,7 +793,7 @@ function Nav({ sections }) {
 // -----------------------------------------------------------------------------
 function Hero() {
   return (
-    <section id="home" className="relative overflow-hidden">
+    <section id="home" className="relative overflow-hidden min-h-screen">
       <div className="absolute inset-0 -z-10 opacity-20">
         <div className={cx("absolute -top-24 left-1/2 h-72 w-[60rem] -translate-x-1/2 rounded-full blur-3xl", brand.gradient)} />
       </div>
@@ -740,41 +849,40 @@ function Hero() {
 function StickyGoToAppButton() {
   const [isHovered, setIsHovered] = useState(false);
 
-  // Attach scroll tracking to the whole page (useScroll will default to window)
-  const { scrollYProgress } = useScroll();
+  const handleMouseEnter = () => setIsHovered(true)
+  const handleMouseLeave = () => setIsHovered(false);
 
-  // Map scroll progress (0 to 1) → button width (184px to 320px)
-  const rawWidth = useTransform(scrollYProgress, [0, 0.3], [184, 320], { clamp: false });
-  const smoothWidth = useSpring(rawWidth, { stiffness: 100, damping: 20 });
+  const { scrollY } = useScroll();
+  const [hasScrolled, setHasScrolled] = useState(false);
+  useMotionValueEvent(scrollY, "change", (y) => {
+    console.log(y);
+    if (y > 70 && !hasScrolled) setHasScrolled(true);
+  });
 
-  const handleMouseEnter = () => {
-    setIsHovered(true);
-  };
-
-  const handleMouseLeave = () => {
-    setIsHovered(false);
-  };
-
-  const goToApp = () => {
-    window.location.href = "app.goodmorningtechnology.com"; // Replace with the actual app URL
-  };
 
   return (
     <div className="fixed bottom-4 right-4 z-50">
       <motion.button
-        style={{ width: smoothWidth }}
         whileTap={{ scale: 0.92 }}
         initial={{ scale: 0 }}
-        animate={{ scale: 1 }}
+        animate={{ scale: 1, width: hasScrolled ? 56 : 170 }}
         transition={{ type: "spring", stiffness: 150 }}
-        className="h-12 bg-gradient-to-r from-sky-400 to-emerald-400 rounded-full shadow-md flex items-center justify-center cursor-pointer p-6 text-white font-semibold"
+        className="h-14 w-100 bg-gradient-to-r from-sky-400 to-emerald-400 rounded-full shadow-md flex items-center justify-center cursor-pointer text-white font-semibold"
         onClick={goToApp}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
         aria-label="Go to App"
       >
-        <span className="text-md font-semibold text-white mr-2">Client Portal</span>
-        <ArrowRightCircleIcon className={`h-8 w-8 ${isHovered ? "text-white" : "text-gray-200"}`} />
+        {hasScrolled ?
+          <></>
+          :
+          <span className="text-md mr-2 inline-block font-medium text-white overflow-hidden whitespace-nowrap">
+            Client Portal
+          </span>}
+
+        <ArrowRightCircleIcon
+          className={`m-0 p-0 h-8 w-8 ${isHovered ? "text-white" : "text-gray-200"}`}
+        />
       </motion.button>
     </div>
   );
@@ -782,16 +890,16 @@ function StickyGoToAppButton() {
 
 
 export default function GoodMorningTechnologyLanding() {
-  const sections = ["home", "services", "pricing", "work", "process", "faq", "contact"];
+  const sections = ["home", "services", "work", "process", "pricing", "faq", "contact"];
   return (
     <div className="min-h-screen bg-white text-slate-800 antialiased">
       <Nav sections={sections} />
       <main>
         <Hero />
         <Services />
-        <Pricing />
         <Work />
         <Process />
+        <Pricing />
         <FAQ />
         <Contact />
       </main>
