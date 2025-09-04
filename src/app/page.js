@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import { motion,useMotionValue, animate, useScroll, useTransform, useSpring } from "framer-motion";
+// import cx from "classnames";
 import {
   ArrowRight,
   Sparkles,
@@ -19,6 +20,7 @@ import {
   Star,
   Phone,
   Mail,
+  ArrowRightCircleIcon
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -121,7 +123,7 @@ function Services() {
 
   return (
     <section id="services" className="py-16 md:py-24 bg-slate-50">
-      <div className="mx-auto max-w-7xl px-4">
+      <div className="mx-auto max-w-7xl px-4 overflow-hidden">
         <motion.div variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }}>
           <SectionHeader
             eyebrow="Services"
@@ -216,7 +218,7 @@ function Pricing() {
 
   return (
     <section id="pricing" className="py-16 md:py-24">
-      <div className="mx-auto max-w-7xl px-4">
+      <div className="mx-auto max-w-7xl px-4 overflow-hidden">
         <motion.div variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }}>
           <SectionHeader
             eyebrow="Pricing"
@@ -301,7 +303,7 @@ function Work() {
 
   return (
     <section id="work" className="py-16 md:py-24 bg-slate-50">
-      <div className="mx-auto max-w-7xl px-4">
+      <div className="mx-auto max-w-7xl px-4 overflow-hidden">
         <motion.div variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }}>
           <SectionHeader
             eyebrow="Our Work"
@@ -370,7 +372,7 @@ function Process() {
 
   return (
     <section id="process" className="py-16 md:py-24">
-      <div className="mx-auto max-w-7xl px-4">
+      <div className="mx-auto max-w-7xl px-4 overflow-hidden">
         <motion.div variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }}>
           <SectionHeader
             eyebrow="Process"
@@ -435,7 +437,7 @@ function FAQ() {
 
   return (
     <section id="faq" className="py-16 md:py-24 bg-slate-50">
-      <div className="mx-auto max-w-4xl px-4">
+      <div className="mx-auto max-w-4xl px-4 overflow-hidden">
         <motion.div variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }}>
           <SectionHeader
             eyebrow="FAQ"
@@ -475,7 +477,7 @@ function FAQ() {
 function Contact() {
   return (
     <section id="contact" className="py-16 md:py-24">
-      <div className="mx-auto max-w-4xl px-4">
+      <div className="mx-auto max-w-4xl px-4 overflow-hidden">
         <motion.div variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }}>
           <SectionHeader
             eyebrow="Contact"
@@ -565,7 +567,7 @@ function Contact() {
 function Footer() {
   return (
     <footer className="bg-slate-900 text-white py-12">
-      <div className="mx-auto max-w-7xl px-4">
+      <div className="mx-auto max-w-7xl px-4 overflow-hidden">
         <div className="grid md:grid-cols-3 gap-8">
           <div>
             <h3 className="font-semibold text-lg mb-4">
@@ -607,25 +609,50 @@ function Footer() {
 // -----------------------------------------------------------------------------
 function Nav({ sections }) {
   const active = useActiveSection(sections);
+
+  useEffect(() => {
+    const highlight = document.querySelector('.highlight');
+    if (highlight && active) {
+      const activeElement = document.querySelector(`a[href="#${active}"]`);
+      if (activeElement) {
+        const { offsetWidth, offsetLeft } = activeElement;
+        highlight.style.width = `${offsetWidth}px`;
+        highlight.style.transform = `translateX(${offsetLeft}px)`;
+        highlight.style.opacity = '1';
+        setTimeout(() => {
+          highlight.style.opacity = '0';
+        }, 400); // Line disappears after 1000ms (1 second)
+      }
+    }
+  }, [active]);
+
   return (
     <div className="sticky top-0 z-50 backdrop-blur bg-white/70 border-b border-slate-200">
-      <div className="mx-auto max-w-7xl px-4 py-3 flex items-center gap-4">
-        <a href="#home" className="font-semibold text-slate-900 text-lg">
-          {/* <span className={brand.textGradient}>good morning</span> technology */}
-
-            <picture class=" max-w-[500px]">
-              <source 
-                media="(min-width: 768px) and (max-width: 1124px), (max-width: 400px)"
-                srcSet="/banner-sand-compressed.png" 
-              />
-              <img 
-                src="/brand-banner.png" 
-                alt="Banner" 
-                class="h-10 min-w-[124px] object-contain" 
-              />
-            </picture>
+      <div className="mx-auto max-w-7xl px-4 py-3 flex items-center gap-4 overflow-hidden">
+        <a href="#" className="font-semibold text-slate-900 text-lg">
+          <picture className="max-w-[500px]">
+            <source 
+              media="(min-width: 768px) and (max-width: 1124px), (max-width: 400px)"
+              srcSet="/banner-sand-compressed.png" 
+            />
+            <img 
+              src="/brand-banner.png" 
+              alt="Banner" 
+              className="h-10 min-w-[124px] object-contain" 
+            />
+          </picture>
         </a>
-        <nav className="ml-auto hidden md:flex items-center gap-2">
+        <nav className="ml-auto hidden md:flex items-center gap-2 relative">
+          <div // Highlight line element
+            className={`highlight absolute transition-all duration-1000 ease-in-out ${brand.gradient} rounded-full`}
+            style={{
+              width: '100px',
+              height: '20px', // Line height
+              transform: 'translateX(0px)',
+              zIndex: -1,
+              opacity: '1', // Initially invisible
+            }}
+          />
           {sections.map((id) => (
             <a
               key={id}
@@ -661,7 +688,7 @@ function Hero() {
       <div className="absolute inset-0 -z-10 opacity-20">
         <div className={cx("absolute -top-24 left-1/2 h-72 w-[60rem] -translate-x-1/2 rounded-full blur-3xl", brand.gradient)} />
       </div>
-      <div className="mx-auto max-w-7xl px-4 py-20 md:py-28 grid md:grid-cols-2 items-center gap-10">
+      <div className="mx-auto max-w-7xl px-4 py-20 md:py-28 grid md:grid-cols-2 items-center gap-10 overflow-hidden">
         <div>
           <motion.h1 variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }} className="text-4xl md:text-6xl font-semibold leading-tight text-slate-900">
             Fresh websites for a new day
@@ -703,6 +730,57 @@ function Hero() {
   );
 }
 
+
+
+
+// -----------------------------------------------------------------------------
+
+
+
+function StickyGoToAppButton() {
+  const [isHovered, setIsHovered] = useState(false);
+
+  // Attach scroll tracking to the whole page (useScroll will default to window)
+  const { scrollYProgress } = useScroll();
+
+  // Map scroll progress (0 to 1) → button width (184px to 320px)
+  const rawWidth = useTransform(scrollYProgress, [0, 0.3], [184, 320], { clamp: false });
+  const smoothWidth = useSpring(rawWidth, { stiffness: 100, damping: 20 });
+
+  const handleMouseEnter = () => {
+    setIsHovered(true);
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+  };
+
+  const goToApp = () => {
+    window.location.href = "app.goodmorningtechnology.com"; // Replace with the actual app URL
+  };
+
+  return (
+    <div className="fixed bottom-4 right-4 z-50">
+      <motion.button
+        style={{ width: smoothWidth }}
+        whileTap={{ scale: 0.92 }}
+        initial={{ scale: 0 }}
+        animate={{ scale: 1 }}
+        transition={{ type: "spring", stiffness: 150 }}
+        className="h-12 bg-gradient-to-r from-sky-400 to-emerald-400 rounded-full shadow-md flex items-center justify-center cursor-pointer p-6 text-white font-semibold"
+        onClick={goToApp}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+        aria-label="Go to App"
+      >
+        <span className="text-md font-semibold text-white mr-2">Client Portal</span>
+        <ArrowRightCircleIcon className={`h-8 w-8 ${isHovered ? "text-white" : "text-gray-200"}`} />
+      </motion.button>
+    </div>
+  );
+}
+
+
 export default function GoodMorningTechnologyLanding() {
   const sections = ["home", "services", "pricing", "work", "process", "faq", "contact"];
   return (
@@ -718,6 +796,7 @@ export default function GoodMorningTechnologyLanding() {
         <Contact />
       </main>
       <Footer />
+      <StickyGoToAppButton />
     </div>
   );
 }
