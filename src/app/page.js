@@ -24,6 +24,8 @@ import {
   ChartBar,
   Grid,
 } from "lucide-react";
+
+import CallTime from "@/lib/microcomponents/CallTime";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -703,7 +705,9 @@ function Footer() {
               <li>{brand.email}</li>
               <li>{brand.phone}</li>
               <li>Available Monday-Friday</li>
-              <li>9 AM - 6 PM EST</li>
+              {/* <li>9 AM - 6 PM PST</li> */}
+              
+              <li><CallTime /></li>
             </ul>
           </div>
         </div>
