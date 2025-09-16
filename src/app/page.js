@@ -36,7 +36,7 @@ import { Badge } from "@/components/ui/badge";
 // Good Morning Technology — Landing Page (no dark mode, no purple gradients)
 // -----------------------------------------------------------------------------
 const goToApp = () => {
-  window.location.href = "app.goodmorningtechnology.com"; // Replace with the actual app URL
+  window.open("https://app.gmt.software"); // Replace with the actual app URL
 };
 
 const brand = {
