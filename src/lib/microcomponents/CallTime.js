@@ -36,7 +36,7 @@ export default function CallTime() {
     return (
         <li>
             <li className=" mb-4">
-                <div className="font-semibold">{userZone.split("/")[1].split("_").join(" ") +" Time:"}</div>
+                <div className="font-semibold">{userZone?.split("/")[1]?.split("_").join(" ") +" Time:"}</div>
                 <div className="text-sm font-light text-slate-400">
                     {localTime} - {localTimePlus8} {tzShort}
                 </div>
